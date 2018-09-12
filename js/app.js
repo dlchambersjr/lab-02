@@ -42,6 +42,7 @@ Horn.readJson = () => {
       })
     }, 'json')
     .then(Horn.loadHorns)
+    .then(arrKey);
 }
 
 //Process through the array and render each object
@@ -50,4 +51,51 @@ Horn.loadHorns = () => {
   Horn.allHorns.forEach((Horn) => Horn.render());
 }
 
+
+function arrKey () {
+  let arrKey = [];
+  Horn.allHorns.forEach(function (item) {
+    console.log('this.keyword: ', item.keyword);
+    if (!arrKey.includes(item.keyword)){
+      arrKey.push(item.keyword);
+    }
+  });
+  console.log('arrKey', arrKey);
+
+
+  for (let i = 0; i < arrKey.length; i++) {
+  //   // create a new section child in the main element
+    $('select').append('<option class="copy"></option>');
+
+    //   // find the new section that was just created
+    let $optionCopy = $('option[class="copy"]');
+
+    $optionCopy.text(arrKey[i]);
+    $optionCopy.removeClass('copy');
+    $optionCopy.attr('value', arrKey[i]);
+
+  }
+}
+
+//When the user makes their selection, show only the image(s) that they selects
+$(`select[name = "filter"]`).on('change', function (){
+  let $selection = $(this).val();
+  $('section').hide();
+  // console.log("$selection", $selection);
+  $(`section[class = "${$selection}"]`).show();
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
 $(document).ready(Horn.readJson());
+
