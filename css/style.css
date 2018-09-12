@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Luckiest+Guy');
+
+body {
+  width: 960px;
+  margin: 0px auto;
+  font-family: 'Luckiest Guy', cursive;
+}
+
+header {
+  margin-bottom: 50px;
+}
+
+header h1 {
+  font-size: 24px;
+  margin: 25px 0px;
+}
+
+#photo-template {
+  display:none;
+}
+
+section {
+  width:297px;
+  float:left;
+  Margin-right: 19px;
+  min-height:500px;
+}
+
+section p {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+}
+
+
+img {
+  width: 297px;
+}
+
+footer {
+  clear:both;
+
+}
