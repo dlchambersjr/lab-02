@@ -74,24 +74,17 @@ function arrKey () {
     $optionCopy.removeClass('copy');
     $optionCopy.attr('value', arrKey[i]);
 
-
-
-
   }
 }
 
+//When the user makes their selection, show only the image(s) that they selects
+$(`select[name = "filter"]`).on('change', function (){
+  let $selection = $(this).val();
+  $('section').hide();
+  // console.log("$selection", $selection);
+  $(`section[class = "${$selection}"]`).show();
 
-//Create the second render function to make <option> list in html
-// Horn.prototype.renderOption = function () {
-
-
-
-//   // Apply the info from each instance to the HTML
-//   $hornCopy.find('img').attr('src', this.image);
-//   $hornCopy.find('p').text(this.description);
-
-// }
-
+})
 
 
 
