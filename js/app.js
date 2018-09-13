@@ -10,27 +10,16 @@ function Horn(hornObject) {
 
 Horn.allHorns = [];
 
-// This function will create the HTML to render the data
+//1. This function will grab the HTML to create the template
 Horn.prototype.render = function () {
+  const $source = $('#photo-template').html();
+  
+  //2. Compile
+  const compileSource = Handlebars.compile( $source );
 
-  // create a new section child in the main element
-  $('main').append('<section class="copy"></section>');
+  //3. Return the HTML from the compiled method
+  return compileSource(this);
 
-  // find the new section that was just created
-  const $hornCopy = $('section[class="copy"]');
-
-  // Create the HTML info for the new section
-  const $hornHtml = $('#photo-template').html();
-
-  // Add the HTML info to the new section
-  $hornCopy.html($hornHtml);
-
-  // Apply the info from each instance to the HTML
-  $hornCopy.find('h2').text(this.title);
-  $hornCopy.find('img').attr('src', this.image);
-  $hornCopy.find('p').text(this.description);
-  $hornCopy.removeClass('copy');
-  $hornCopy.addClass(this.keyword);
 }
 
 // Retrieve the JSON data
@@ -48,7 +37,7 @@ Horn.readJson = () => {
 //Process through the array and render each object
 
 Horn.loadHorns = () => {
-  Horn.allHorns.forEach((Horn) => Horn.render());
+  Horn.allHorns.forEach( Horn => $('#horns').append(Horn.render()));
 }
 
 
