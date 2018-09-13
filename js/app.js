@@ -83,8 +83,9 @@ $(`li[id = "page-1"]`).on('click', function () {
   // console.log("$selection", $selection);
   // $(`section[class = "${$selection}"]`).show();
   console.log($(this).text());
-  // if ( !$(this).text() === 'Page 1' ) {
-  //   Horn.readJson('data/page-1.json' );
+  if (!$(this).text() === 'Page 1') {
+    Horn.readJson('data/page-1.json');
+  }
 
 })
 
