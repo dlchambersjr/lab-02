@@ -23,8 +23,8 @@ Horn.prototype.render = function () {
 }
 
 // Retrieve the JSON data
-Horn.readJson = () => {
-  $.get('data/page-1.json')
+Horn.readJson = ($jsonFile) => {
+  $.get($jsonFile)
     .then(data => {
       data.forEach(horn => {
         Horn.allHorns.push(new Horn(horn));
@@ -76,6 +76,17 @@ $(`select[name = "filter"]`).on('change', function () {
 
 })
 
+//PAGE-1 EVENT LISTENER
+$(`li[id = "page-1"]`).on('click', function () {
+  // let $selection = $(this).val();
+  // $('section').hide();
+  // console.log("$selection", $selection);
+  // $(`section[class = "${$selection}"]`).show();
+  console.log($(this).text());
+  // if ( !$(this).text() === 'Page 1' ) {
+  //   Horn.readJson('data/page-1.json' );
+
+})
 
 
 
@@ -87,5 +98,7 @@ $(`select[name = "filter"]`).on('change', function () {
 
 
 
-$(document).ready(Horn.readJson());
+
+
+$(document).ready(Horn.readJson('data/page-1.json'));
 
