@@ -13,9 +13,9 @@ Horn.allHorns = [];
 //1. This function will grab the HTML to create the template
 Horn.prototype.render = function () {
   const $source = $('#photo-template').html();
-  
+
   //2. Compile
-  const compileSource = Handlebars.compile( $source );
+  const compileSource = Handlebars.compile($source);
 
   //3. Return the HTML from the compiled method
   return compileSource(this);
@@ -37,15 +37,15 @@ Horn.readJson = () => {
 //Process through the array and render each object
 
 Horn.loadHorns = () => {
-  Horn.allHorns.forEach( Horn => $('#horns').append(Horn.render()));
+  Horn.allHorns.forEach(Horn => $('#horns').append(Horn.render()));
 }
 
 
-function arrKey () {
+function arrKey() {
   let arrKey = [];
   Horn.allHorns.forEach(function (item) {
     console.log('this.keyword: ', item.keyword);
-    if (!arrKey.includes(item.keyword)){
+    if (!arrKey.includes(item.keyword)) {
       arrKey.push(item.keyword);
     }
   });
@@ -53,7 +53,7 @@ function arrKey () {
 
 
   for (let i = 0; i < arrKey.length; i++) {
-  //   // create a new section child in the main element
+    //   // create a new section child in the main element
     $('select').append('<option class="copy"></option>');
 
     //   // find the new section that was just created
@@ -67,8 +67,9 @@ function arrKey () {
 }
 
 //When the user makes their selection, show only the image(s) that they selects
-$(`select[name = "filter"]`).on('change', function (){
+$(`select[name = "filter"]`).on('change', function () {
   let $selection = $(this).val();
+  console.log($selection);
   $('section').hide();
   // console.log("$selection", $selection);
   $(`section[class = "${$selection}"]`).show();
