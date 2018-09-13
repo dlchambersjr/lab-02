@@ -61,7 +61,7 @@ function arrKey() {
 
   for (let i = 0; i < arrKey.length; i++) {
     //   // create a new section child in the main element
-    $('select').append('<option class="copy"></option>');
+    $('select[name = "filter"]').append('<option class="copy"></option>');
 
     //   // find the new section that was just created
     let $optionCopy = $('option[class="copy"]');
@@ -78,7 +78,6 @@ $(`select[name = "filter"]`).on('change', function () {
   let $selection = $(this).val();
   $('section').hide();
   $(`section[class = "${$selection}"]`).show();
-
 })
 
 let currentPage = 'Page 1'
@@ -99,7 +98,15 @@ $(`li[id = "page-2"]`).on('click', function () {
   }
 })
 
-
+//SORT-BY-NAME EVENT LISTENE
+$(`select[name = "sort"]`).on('change', function () {
+  // if ($(this).text() !== currentPage) {
+  //   Horn.readJson('data/page-2.json');
+  //   currentPage = 'Page 2';
+  let $selectionSort = $(this).val();
+  console.log($selectionSort);
+  
+})
 
 
 
