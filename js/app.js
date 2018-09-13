@@ -32,12 +32,17 @@ Horn.readJson = ($jsonFile) => {
         Horn.allHorns.push(new Horn(horn));
       })
     }, 'json')
+    .then(sortArr)
     .then(Horn.loadHorns)
     .then(arrKey);
 }
 
-//Process through the array and render each object
+function sortArr () {
+  Horn.allHorns.sort();
+  console.log(Horn.allHorns);
+}
 
+//Process through the array and render each object
 Horn.loadHorns = () => {
   let $previousPage = $('#horns');
   $previousPage = $previousPage.html('');
@@ -105,7 +110,7 @@ $(`select[name = "sort"]`).on('change', function () {
   //   currentPage = 'Page 2';
   let $selectionSort = $(this).val();
   console.log($selectionSort);
-  
+
 })
 
 
