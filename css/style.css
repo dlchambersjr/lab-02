@@ -15,6 +15,12 @@ header h1 {
   margin: 25px 0px;
 }
 
+header li {
+  display: inline-block;
+  margin-right: 20px;
+
+}
+
 #photo-template {
   display:none;
 }

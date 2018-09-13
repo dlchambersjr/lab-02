@@ -24,9 +24,11 @@ Horn.prototype.render = function () {
 
 // Retrieve the JSON data
 Horn.readJson = ($jsonFile) => {
+  Horn.allHorns = [];
   $.get($jsonFile)
     .then(data => {
       data.forEach(horn => {
+
         Horn.allHorns.push(new Horn(horn));
       })
     }, 'json')
@@ -37,19 +39,24 @@ Horn.readJson = ($jsonFile) => {
 //Process through the array and render each object
 
 Horn.loadHorns = () => {
+  let $previousPage = $('#horns');
+  $previousPage = $previousPage.html('');
+
   Horn.allHorns.forEach(Horn => $('#horns').append(Horn.render()));
 }
 
 
 function arrKey() {
+  let $previousFilter = $(`select[name = "filter"]`);
+  $previousFilter = $previousFilter.html('');
+
   let arrKey = [];
   Horn.allHorns.forEach(function (item) {
-    console.log('this.keyword: ', item.keyword);
     if (!arrKey.includes(item.keyword)) {
       arrKey.push(item.keyword);
     }
   });
-  console.log('arrKey', arrKey);
+
 
 
   for (let i = 0; i < arrKey.length; i++) {
@@ -69,27 +76,28 @@ function arrKey() {
 //When the user makes their selection, show only the image(s) that they selects
 $(`select[name = "filter"]`).on('change', function () {
   let $selection = $(this).val();
-  console.log($selection);
   $('section').hide();
-  // console.log("$selection", $selection);
   $(`section[class = "${$selection}"]`).show();
 
 })
 
+let currentPage = 'Page 1'
+
 //PAGE-1 EVENT LISTENER
 $(`li[id = "page-1"]`).on('click', function () {
-  // let $selection = $(this).val();
-  // $('section').hide();
-  // console.log("$selection", $selection);
-  // $(`section[class = "${$selection}"]`).show();
-  console.log($(this).text());
-  if (!$(this).text() === 'Page 1') {
+  if ($(this).text() !== currentPage) {
     Horn.readJson('data/page-1.json');
+    currentPage = 'Page 1';
   }
-
 })
 
-
+//PAGE-2 EVENT LISTENE
+$(`li[id = "page-2"]`).on('click', function () {
+  if ($(this).text() !== currentPage) {
+    Horn.readJson('data/page-2.json');
+    currentPage = 'Page 2';
+  }
+})
 
 
 
