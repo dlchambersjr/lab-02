@@ -8,8 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="./css/reset.css" rel="stylesheet" type="text/css" />
   <link href="./css/style.css" rel="stylesheet" type="text/css" />
-  <script id ="photo-template" type = "text/x-handlebars-template">
-    <section>
+  <script id="photo-template" type="text/x-handlebars-template">
+    <section class="{{keyword}}">
       <h2> {{ title }}</h2>
       <img src="{{ image }}" alt="{{ title }}">
       <p>{{ description }}</p>
@@ -23,8 +23,14 @@
     <select name="filter">
       <option value="default">Filter by Keyword</option>
     </select>
+
+    <ul>
+      <br />
+      <li id="page-1">Page 1</li>
+      <li id="page-2">Page 2</li>
+    </ul>
   </header>
-  <main id = "horns">
+  <main id="horns">
   </main>
   <footer>
     &copy; 2018 Code Fellows

@@ -13,9 +13,9 @@ Horn.allHorns = [];
 //1. This function will grab the HTML to create the template
 Horn.prototype.render = function () {
   const $source = $('#photo-template').html();
-  
+
   //2. Compile
-  const compileSource = Handlebars.compile( $source );
+  const compileSource = Handlebars.compile($source);
 
   //3. Return the HTML from the compiled method
   return compileSource(this);
@@ -23,10 +23,12 @@ Horn.prototype.render = function () {
 }
 
 // Retrieve the JSON data
-Horn.readJson = () => {
-  $.get('data/page-1.json')
+Horn.readJson = ($jsonFile) => {
+  Horn.allHorns = [];
+  $.get($jsonFile)
     .then(data => {
       data.forEach(horn => {
+
         Horn.allHorns.push(new Horn(horn));
       })
     }, 'json')
@@ -37,23 +39,28 @@ Horn.readJson = () => {
 //Process through the array and render each object
 
 Horn.loadHorns = () => {
-  Horn.allHorns.forEach( Horn => $('#horns').append(Horn.render()));
+  let $previousPage = $('#horns');
+  $previousPage = $previousPage.html('');
+
+  Horn.allHorns.forEach(Horn => $('#horns').append(Horn.render()));
 }
 
 
-function arrKey () {
+function arrKey() {
+  let $previousFilter = $(`select[name = "filter"]`);
+  $previousFilter = $previousFilter.html('');
+
   let arrKey = [];
   Horn.allHorns.forEach(function (item) {
-    console.log('this.keyword: ', item.keyword);
-    if (!arrKey.includes(item.keyword)){
+    if (!arrKey.includes(item.keyword)) {
       arrKey.push(item.keyword);
     }
   });
-  console.log('arrKey', arrKey);
+
 
 
   for (let i = 0; i < arrKey.length; i++) {
-  //   // create a new section child in the main element
+    //   // create a new section child in the main element
     $('select').append('<option class="copy"></option>');
 
     //   // find the new section that was just created
@@ -67,12 +74,29 @@ function arrKey () {
 }
 
 //When the user makes their selection, show only the image(s) that they selects
-$(`select[name = "filter"]`).on('change', function (){
+$(`select[name = "filter"]`).on('change', function () {
   let $selection = $(this).val();
   $('section').hide();
-  // console.log("$selection", $selection);
   $(`section[class = "${$selection}"]`).show();
 
+})
+
+let currentPage = 'Page 1'
+
+//PAGE-1 EVENT LISTENER
+$(`li[id = "page-1"]`).on('click', function () {
+  if ($(this).text() !== currentPage) {
+    Horn.readJson('data/page-1.json');
+    currentPage = 'Page 1';
+  }
+})
+
+//PAGE-2 EVENT LISTENE
+$(`li[id = "page-2"]`).on('click', function () {
+  if ($(this).text() !== currentPage) {
+    Horn.readJson('data/page-2.json');
+    currentPage = 'Page 2';
+  }
 })
 
 
@@ -85,6 +109,5 @@ $(`select[name = "filter"]`).on('change', function (){
 
 
 
-
-$(document).ready(Horn.readJson());
+$(document).ready(Horn.readJson('data/page-1.json'));
 
