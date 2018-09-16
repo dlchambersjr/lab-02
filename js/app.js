@@ -19,62 +19,67 @@ Horn.prototype.render = function () {
 
   //3. Return the HTML from the compiled method
   return compileSource(this);
-
 }
 
 // Retrieve the JSON data
-Horn.readJson = ($jsonFile) => {
+Horn.readJson = ($jsonFile, sortOrder) => {
   Horn.allHorns = [];
   $.get($jsonFile)
     .then(data => {
-      data.forEach(horn => {
+      data.forEach(image => {
 
-        Horn.allHorns.push(new Horn(horn));
+        Horn.allHorns.push(new Horn(image));
       })
     }, 'json')
-    .then(sortArr)
-    .then(Horn.loadHorns)
-    .then(arrKey);
+    .then(Horn.loadHorns(sortOrder))
+    .then(Horn.createFilter)
+    .then(Horn.pageChange);
 }
 
-function sortArr() {
-  Horn.allHorns.sort();
-  console.log(Horn.allHorns);
+Horn.sortImages = (array, sortOrder) => {
+  console.log('sort property', sortOrder);
+  console.log('sort array', array);
+  array.sort((a, b) => {
+    let firstComparison = a[sortOrder];
+    let secondComparison = b[sortOrder];
+    return (firstComparison > secondComparison) ? 1 : (firstComparison < secondComparison) ? -1 : 0;
+  });
 }
 
 //Process through the array and render each object
-Horn.loadHorns = () => {
+Horn.loadHorns = (sortOrder) => {
+  console.log('loadhorns', sortOrder)
   let $previousPage = $('#horns');
   $previousPage = $previousPage.html('');
-
+  Horn.sortImages(Horn.allHorns, sortOrder)
   Horn.allHorns.forEach(Horn => $('#horns').append(Horn.render()));
 }
 
 // Filter the images by keyword
 
-function arrKey() {
+Horn.createFilter = () => {
   let $previousFilter = $(`select[name = "filter"]`);
   $previousFilter = $previousFilter.html('');
   $previousFilter.append('<option class="all" value="all">No Filter</option>');
 
-  let arrKey = [];
+  let filterArray = [];
   Horn.allHorns.forEach(function (item) {
-    if (!arrKey.includes(item.keyword)) {
-      arrKey.push(item.keyword);
+    if (!filterArray.includes(item.keyword)) {
+      filterArray.push(item.keyword);
     }
   });
 
-  for (let i = 0; i < arrKey.length; i++) {
+  for (let i = 0; i < filterArray.length; i++) {
     //   // create a new section child in the main element
     $('select[name = "filter"]').append('<option class="copy"></option>');
 
     //   // find the new section that was just created
     let $optionCopy = $('option[class="copy"]');
 
-    $optionCopy.text(arrKey[i]);
+    $optionCopy.text(filterArray[i]);
     $optionCopy.removeClass('copy');
     $optionCopy.removeAttr('class');
-    $optionCopy.attr('value', arrKey[i]);
+    $optionCopy.attr('value', filterArray[i]);
   }
 }
 
@@ -91,40 +96,50 @@ $(`select[name = "filter"]`).on('change', function () {
   }
 })
 
+
 //PAGE-1 EVENT LISTENER
 let currentPage = 'Page 1'
+Horn.pageChange = () => {
+  $(`li[id = "page-1"]`).on('click', function () {
+    if ($(this).text() !== currentPage) {
+      $(this).css('text-decoration', 'underline');
+      $(`li[id = "page-2"]`).css('text-decoration', 'none');
+      Horn.readJson('data/page-1.json');
+      currentPage = 'Page 1';
+    }
+  })
 
-$(`li[id = "page-1"]`).on('click', function () {
-  if ($(this).text() !== currentPage) {
-    $(this).css('text-decoration', 'underline');
-    $(`li[id = "page-2"]`).css('text-decoration', 'none');
-    Horn.readJson('data/page-1.json');
-    currentPage = 'Page 1';
-  }
-})
+  //PAGE-2 EVENT LISTENER
+  $(`li[id = "page-2"]`).on('click', function () {
+    if ($(this).text() !== currentPage) {
+      $(this).css('text-decoration', 'underline');
+      $(`li[id = "page-1"]`).css('text-decoration', 'none');
+      Horn.readJson('data/page-2.json');
+      currentPage = 'Page 2';
+    }
+  })
 
-//PAGE-2 EVENT LISTENER
-$(`li[id = "page-2"]`).on('click', function () {
-  if ($(this).text() !== currentPage) {
-    $(this).css('text-decoration', 'underline');
-    $(`li[id = "page-1"]`).css('text-decoration', 'none');
-    Horn.readJson('data/page-2.json');
-    currentPage = 'Page 2';
-  }
-})
+}
+//SORT-BY EVENT LISTENER
+Horn.changeSort = () => {
+  $(`input[name = "sort"]`).on('change', function () {
+    let $selectionSort = $(this).val();
+    Horn.sortImages(Horn.allHorns, $selectionSort);
+  })
+}
 
-//SORT-BY-NAME EVENT LISTENER
-$(`select[name = "sort"]`).on('change', function () {
-  // if ($(this).text() !== currentPage) {
-  //   Horn.readJson('data/page-2.json');
-  //   currentPage = 'Page 2';
-  let $selectionSort = $(this).val();
-  console.log($selectionSort);
+// Image.handleSort = () => {
+//   $('input').on('change', function () {
+//     $('select').val('default');
+//     $('div').remove()
+//     Image.sortBy(Image.all, $(this).attr('id'))
+//     Image.all.forEach(image => {
+//       $('#image-container').append(image.render());
+//     })
+//   })
 
-})
 
 $(document).ready(() => {
-  Horn.readJson('data/page-1.json');
+  Horn.readJson('data/page-1.json', 'title');
   $(`li[id = "page-1"]`).css('text-decoration', 'underline');
 });
-
