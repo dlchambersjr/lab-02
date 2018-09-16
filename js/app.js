@@ -37,7 +37,7 @@ Horn.readJson = ($jsonFile) => {
     .then(arrKey);
 }
 
-function sortArr () {
+function sortArr() {
   Horn.allHorns.sort();
   console.log(Horn.allHorns);
 }
@@ -50,10 +50,12 @@ Horn.loadHorns = () => {
   Horn.allHorns.forEach(Horn => $('#horns').append(Horn.render()));
 }
 
+// Filter the images by keyword
 
 function arrKey() {
   let $previousFilter = $(`select[name = "filter"]`);
   $previousFilter = $previousFilter.html('');
+  $previousFilter.append('<option class="all" value="all">No Filter</option>');
 
   let arrKey = [];
   Horn.allHorns.forEach(function (item) {
@@ -61,8 +63,6 @@ function arrKey() {
       arrKey.push(item.keyword);
     }
   });
-
-
 
   for (let i = 0; i < arrKey.length; i++) {
     //   // create a new section child in the main element
@@ -73,37 +73,47 @@ function arrKey() {
 
     $optionCopy.text(arrKey[i]);
     $optionCopy.removeClass('copy');
+    $optionCopy.removeAttr('class');
     $optionCopy.attr('value', arrKey[i]);
-
   }
 }
 
 //When the user makes their selection, show only the image(s) that they selects
 $(`select[name = "filter"]`).on('change', function () {
   let $selection = $(this).val();
-  $('section').hide();
-  $(`section[class = "${$selection}"]`).show();
+  if ($selection === 'all' && currentPage === 'Page 1') {
+    Horn.readJson('data/page-1.json');
+  } else if ($selection === 'all' && currentPage === 'Page 2') {
+    Horn.readJson('data/page-2.json');
+  } else {
+    $('section').hide();
+    $(`section[class = "${$selection}"]`).show();
+  }
 })
 
+//PAGE-1 EVENT LISTENER
 let currentPage = 'Page 1'
 
-//PAGE-1 EVENT LISTENER
 $(`li[id = "page-1"]`).on('click', function () {
   if ($(this).text() !== currentPage) {
+    $(this).css('text-decoration', 'underline');
+    $(`li[id = "page-2"]`).css('text-decoration', 'none');
     Horn.readJson('data/page-1.json');
     currentPage = 'Page 1';
   }
 })
 
-//PAGE-2 EVENT LISTENE
+//PAGE-2 EVENT LISTENER
 $(`li[id = "page-2"]`).on('click', function () {
   if ($(this).text() !== currentPage) {
+    $(this).css('text-decoration', 'underline');
+    $(`li[id = "page-1"]`).css('text-decoration', 'none');
     Horn.readJson('data/page-2.json');
     currentPage = 'Page 2';
   }
 })
 
-//SORT-BY-NAME EVENT LISTENE
+//SORT-BY-NAME EVENT LISTENER
 $(`select[name = "sort"]`).on('change', function () {
   // if ($(this).text() !== currentPage) {
   //   Horn.readJson('data/page-2.json');
@@ -113,13 +123,8 @@ $(`select[name = "sort"]`).on('change', function () {
 
 })
 
-
-
-
-
-
-
-
-
-$(document).ready(Horn.readJson('data/page-1.json'));
+$(document).ready(() => {
+  Horn.readJson('data/page-1.json');
+  $(`li[id = "page-1"]`).css('text-decoration', 'underline');
+});
 

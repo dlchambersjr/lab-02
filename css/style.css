@@ -13,24 +13,50 @@ header {
 }
 
 header h1 {
-  font-size: 50px;
-  margin: 25px 0px;
-  text-align: center;
+  font-size: 75px;
+  text-shadow: 2px 2px 5px grey;
+  color:purple;
+  
 }
 
 header li {
   display: inline-block;
-  font-size:25px;
-  margin-right: 20px;
+  font-size:50px;
+  margin-right: 50px;
   margin-bottom: 30px;
+  padding: 10px;
 }
+
+header div {
+  display:flex;
+  flex-direction:row;
+ }
+div h2 {
+  font-size: 25px;
+  margin-right: 25px;
+}
+
+div #name,#keyword {
+  width:20px;
+  height:20px;
+}
+
+div label {
+  font-size:25px;
+  margin-left:5px;
+  margin-right: 20px;
+}
+
+ select {
+   font-size:25px;
+   margin-right: 25px;
+   margin-bottom: 30px;
+     }
+
 
 /* IMAGE SECTION OF PAGE */
 
-select {
-  /* margin-top: 30px; */
-  margin-bottom: 30px;
-    }
+
 
 #photo-template {
   display:none;

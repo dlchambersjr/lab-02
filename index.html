@@ -21,13 +21,24 @@
   <header>
     <h1>The Gallery of Horns</h1>
     <ul>
-      <br />
       <li id="page-1">Page 1</li>
       <li id="page-2">Page 2</li>
     </ul>
-    <select name="filter">
-      <option value="default">Filter by Keyword</option>
-    </select>
+    <div>
+
+      <h2>Filter: </h2>
+      <select name="filter">
+        <option value="default">Filter by Keyword</option>
+      </select>
+
+      <h2>Sort By:</h2>
+      <input type="radio" id="name" name="sort" value="name" checked />
+      <label for="name">Name</label>
+      <input type="radio" id="keyword" name="sort" value="keyword" />
+      <label for="keyword">Keyword</label>
+
+    </div>
+
 
   </header>
 
