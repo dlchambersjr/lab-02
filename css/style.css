@@ -6,33 +6,44 @@ body {
   font-family: 'Luckiest Guy', cursive;
 }
 
+/* TITLE, PAGE SELECTION, FILTER, SORT */
+
 header {
   margin-bottom: 50px;
 }
 
 header h1 {
-  font-size: 24px;
+  font-size: 50px;
   margin: 25px 0px;
+  text-align: center;
 }
 
 header li {
   display: inline-block;
+  font-size:25px;
   margin-right: 20px;
   margin-bottom: 30px;
 }
 
+/* IMAGE SECTION OF PAGE */
+
 select {
   /* margin-top: 30px; */
   margin-bottom: 30px;
-}
+    }
 
 #photo-template {
   display:none;
 }
 
+main {
+  display:flex;
+  flex-direction:wrap;
+  flex-flow: row wrap;
+}
 section {
+
   width:297px;
-  float:left;
   Margin-right: 19px;
   min-height:500px;
 }
@@ -43,13 +54,12 @@ section p {
   display: none;
 }
 
-
 img {
   width: 297px;
 }
 
 footer {
-  clear:both;
+
 
 }
 
