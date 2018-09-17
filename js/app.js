@@ -125,7 +125,7 @@ Horn.changeSort = () => {
     $('#horns').empty();
     Horn.sortImages(Horn.allHorns, $selectionSort)
     Horn.renderHorns();
-
+    Horn.popOut();
   })
 }
 
