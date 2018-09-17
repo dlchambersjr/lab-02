@@ -9,6 +9,7 @@ function Horn(hornObject) {
 }
 
 Horn.allHorns = [];
+// let sortOrder = 'title'
 
 //1. This function will grab the HTML to create the template
 Horn.prototype.render = function () {
@@ -22,36 +23,25 @@ Horn.prototype.render = function () {
 }
 
 // Retrieve the JSON data
-Horn.readJson = ($jsonFile, sortOrder) => {
+Horn.readJson = ($jsonFile) => {
   Horn.allHorns = [];
   $.get($jsonFile)
     .then(data => {
       data.forEach(image => {
-
         Horn.allHorns.push(new Horn(image));
       })
+      console.log('from jSon', Horn.allHorns)
     }, 'json')
-    .then(Horn.loadHorns(sortOrder))
+    // .then(Horn.sortImages)
+    .then(Horn.loadHorns)
     .then(Horn.createFilter)
     .then(Horn.pageChange);
 }
 
-Horn.sortImages = (array, sortOrder) => {
-  console.log('sort property', sortOrder);
-  console.log('sort array', array);
-  array.sort((a, b) => {
-    let firstComparison = a[sortOrder];
-    let secondComparison = b[sortOrder];
-    return (firstComparison > secondComparison) ? 1 : (firstComparison < secondComparison) ? -1 : 0;
-  });
-}
-
 //Process through the array and render each object
-Horn.loadHorns = (sortOrder) => {
-  console.log('loadhorns', sortOrder)
+Horn.loadHorns = () => {
   let $previousPage = $('#horns');
   $previousPage = $previousPage.html('');
-  Horn.sortImages(Horn.allHorns, sortOrder)
   Horn.allHorns.forEach(Horn => $('#horns').append(Horn.render()));
 }
 
@@ -68,6 +58,8 @@ Horn.createFilter = () => {
       filterArray.push(item.keyword);
     }
   });
+
+  filterArray.sort();
 
   for (let i = 0; i < filterArray.length; i++) {
     //   // create a new section child in the main element
@@ -95,7 +87,6 @@ $(`select[name = "filter"]`).on('change', function () {
     $(`section[class = "${$selection}"]`).show();
   }
 })
-
 
 //PAGE-1 EVENT LISTENER
 let currentPage = 'Page 1'
@@ -128,18 +119,7 @@ Horn.changeSort = () => {
   })
 }
 
-// Image.handleSort = () => {
-//   $('input').on('change', function () {
-//     $('select').val('default');
-//     $('div').remove()
-//     Image.sortBy(Image.all, $(this).attr('id'))
-//     Image.all.forEach(image => {
-//       $('#image-container').append(image.render());
-//     })
-//   })
-
-
 $(document).ready(() => {
-  Horn.readJson('data/page-1.json', 'title');
+  Horn.readJson('data/page-1.json');
   $(`li[id = "page-1"]`).css('text-decoration', 'underline');
 });
