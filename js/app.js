@@ -8,9 +8,6 @@ function Horn(hornObject) {
   this.horns = hornObject.horns;
 }
 
-Horn.allHorns = [];
-// let sortOrder = 'title'
-
 //1. This function will grab the HTML to create the template
 Horn.prototype.render = function () {
   const $source = $('#photo-template').html();
@@ -23,25 +20,33 @@ Horn.prototype.render = function () {
 }
 
 // Retrieve the JSON data
-Horn.readJson = ($jsonFile) => {
+Horn.readJson = ($jsonFile, sortBy) => {
   Horn.allHorns = [];
+  $('#horns').html('');
   $.get($jsonFile)
     .then(data => {
       data.forEach(image => {
         Horn.allHorns.push(new Horn(image));
       })
-      console.log('from jSon', Horn.allHorns)
+      Horn.sortImages(Horn.allHorns, sortBy)
     }, 'json')
-    // .then(Horn.sortImages)
-    .then(Horn.loadHorns)
+    .then(Horn.renderHorns)
     .then(Horn.createFilter)
-    .then(Horn.pageChange);
+    .then(Horn.pageChange)
+    .then(Horn.changeSort);
+}
+
+// Sort Images before render
+Horn.sortImages = (arrayToSort, sortOn) => {
+  arrayToSort.sort((a, b) => {
+    let firstComparison = a[sortOn];
+    let secondComparison = b[sortOn];
+    return (firstComparison > secondComparison) ? 1 : (firstComparison < secondComparison) ? -1 : 0;
+  });
 }
 
 //Process through the array and render each object
-Horn.loadHorns = () => {
-  let $previousPage = $('#horns');
-  $previousPage = $previousPage.html('');
+Horn.renderHorns = () => {
   Horn.allHorns.forEach(Horn => $('#horns').append(Horn.render()));
 }
 
@@ -88,8 +93,8 @@ $(`select[name = "filter"]`).on('change', function () {
   }
 })
 
-//PAGE-1 EVENT LISTENER
 let currentPage = 'Page 1'
+//PAGE CHANGE EVENT LISTENER
 Horn.pageChange = () => {
   $(`li[id = "page-1"]`).on('click', function () {
     if ($(this).text() !== currentPage) {
@@ -100,7 +105,6 @@ Horn.pageChange = () => {
     }
   })
 
-  //PAGE-2 EVENT LISTENER
   $(`li[id = "page-2"]`).on('click', function () {
     if ($(this).text() !== currentPage) {
       $(this).css('text-decoration', 'underline');
@@ -115,11 +119,15 @@ Horn.pageChange = () => {
 Horn.changeSort = () => {
   $(`input[name = "sort"]`).on('change', function () {
     let $selectionSort = $(this).val();
-    Horn.sortImages(Horn.allHorns, $selectionSort);
+    console.log($selectionSort);
+    $('#horns').empty();
+    Horn.sortImages(Horn.allHorns, $selectionSort)
+    Horn.renderHorns();
+
   })
 }
 
 $(document).ready(() => {
-  Horn.readJson('data/page-1.json');
+  Horn.readJson('data/page-1.json', 'title');
   $(`li[id = "page-1"]`).css('text-decoration', 'underline');
 });
