@@ -47,6 +47,29 @@ div label {
   margin-right: 20px;
 }
 
+div.pop-out {
+  width: 900px;
+  height: 600px;
+  margin: 0px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: darkgray;
+}
+
+.pop-out {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.clear-pop-out {
+  display: inline;
+  background-color: transparent;
+}
+
  select {
    font-size:25px;
    margin-right: 25px;
@@ -82,10 +105,5 @@ section p {
 
 img {
   width: 297px;
-}
-
-footer {
-
-
 }
 

@@ -33,7 +33,8 @@ Horn.readJson = ($jsonFile, sortBy) => {
     .then(Horn.renderHorns)
     .then(Horn.createFilter)
     .then(Horn.pageChange)
-    .then(Horn.changeSort);
+    .then(Horn.changeSort)
+    .then(Horn.popOut)
 }
 
 // Sort Images before render
@@ -91,6 +92,7 @@ $(`select[name = "filter"]`).on('change', function () {
     $('section').hide();
     $(`section[class = "${$selection}"]`).show();
   }
+
 })
 
 let currentPage = 'Page 1'
@@ -127,7 +129,28 @@ Horn.changeSort = () => {
   })
 }
 
+Horn.popOut = () => {
+  $('img').on('click', function () {
+    let $mainHtml = $('main').html();
+    let $selectedImage = $(this);
+    let $sectionHtml = $selectedImage.parent().html();
+    $('main').empty().append(`<div class="pop-out"></div>`);
+    $('div[class="pop-out"]').html($sectionHtml);
+    $selectedImage.addClass('pop-out');
+    Horn.closePopOut($mainHtml);
+  })
+}
+
+Horn.closePopOut = ($text) => {
+  $('div[class="pop-out"]').on('click', function () {
+    $('main').empty().html($text);
+    Horn.popOut();
+  });
+}
+
 $(document).ready(() => {
   Horn.readJson('data/page-1.json', 'title');
   $(`li[id = "page-1"]`).css('text-decoration', 'underline');
+  Horn.closePopOut();
 });
+
