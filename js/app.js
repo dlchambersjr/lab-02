@@ -151,6 +151,5 @@ Horn.closePopOut = ($text) => {
 $(document).ready(() => {
   Horn.readJson('data/page-1.json', 'title');
   $(`li[id = "page-1"]`).css('text-decoration', 'underline');
-  Horn.closePopOut();
 });
 
